@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSV Data Table</title>
+    <title>Table Output & Processing</title>
     <!-- The section below contains the CSS content for styling the tables on our webpage-->
     <style>
         body {
@@ -17,7 +17,7 @@
         }
 
         table {
-            width: 50%;
+            width: 33%;
             margin: 20px auto;
             border-collapse: collapse;
         }
@@ -46,11 +46,11 @@
 
 <body>
     <!-- The content below shows the structure of the first and main table we have -->
-    <h1>Data Table</h1>
+    <h1>Table 1</h1>
     <table>
         <thead>
             <tr>
-                <th>Index</th>
+                <th>Index #</th>
                 <th>Value</th>
             </tr>
         </thead>
@@ -60,7 +60,7 @@
     </table>
 
     <!-- The content below shows the structure of the second table we have -->
-    <h1>Data Table 2</h1>
+    <h1>Table 2</h1>
     <table>
         <thead>
             <tr>
@@ -98,7 +98,7 @@
                             tableBody.appendChild(row);
                         }
                     }
-                    // Call the processTable2Data function with Table 1 data
+                    // Call the processNewTable function with Table 1 data
                     processNewTable(data);
                 })
                 .catch(error => {
