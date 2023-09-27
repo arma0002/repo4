@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Data Table</title>
+    <!-- The section below contains the CSS content for styling the tables on our webpage-->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ccc;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- The content below shows the structure of the first and main table we have -->
+    <h1>Data Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here dynamically using JavaScript code one by one-->
+        </tbody>
+    </table>
+
+    <!-- The content below shows the structure of the second table we have -->
+    <h1>Data Table 2</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="table2-body">
+            <!-- Data will be inserted here dynamically using JavaScript code one by one-->
+        </tbody>
+    </table>
+
+    <!-- This section of the code is JavaScript based where we use functions to fetch data from CSV File and populate our tables-->
+    <script>
+        let data; // Variable to store Table 1 data
+
+        // Function to fetch and display CSV data
+        function fetchData() {
+            fetch('Table_Input.csv')
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    const tableBody = document.querySelector('table tbody');
+
+                    // Store the Table 1 data in the variable
+                    data = rows.map(row => parseInt(row.split(',')[1])); // We know value is in the second column
+
+                    // Loop through CSV rows and create table rows
+                    for (let i = 1; i < rows.length; i++) {
+                        const columns = rows[i].split(',');
+                        if (columns.length === 2) {
+                            const [index, value] = columns;
+                            const row = document.createElement('tr');
+                            row.innerHTML = `<td>${index}</td><td>${value}</td>`;
+                            tableBody.appendChild(row);
+                        }
+                    }
+                    // Call the processTable2Data function with Table 1 data
+                    processNewTable(data);
+                })
+                .catch(error => {
+                    console.error('Error loading CSV data:', error);
+                });
+        }
+
+        // Function to Create the second table with calculated values
+        function processNewTable(data) {
+            // Calculate values for Table 2 based on Table 1 data
+            console.log(data)
+            const table2Data = [
+                { category: 'Alpha', value: data[5] + data[20] },
+                { category: 'Beta', value: data[15] / data[7] },
+                { category: 'Charlie', value: data[13] * data[12] }
+            ];
+
+            // Display Table 2 data
+            const table2Body = document.querySelector('#table2-body');
+            table2Body.innerHTML = '';
+            table2Data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.category}</td><td>${item.value}</td>`;
+                table2Body.appendChild(row);
+            });
+        }
+
+        // Call the fetchData function when the page loads
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
